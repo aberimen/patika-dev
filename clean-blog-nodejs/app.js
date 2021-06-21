@@ -1,15 +1,15 @@
-const express = require("express");
+const express = require('express');
+const path = require('path');
+
 const app = express();
 const port = 3000;
 
-app.get("/posts", (req, res) => {
-  const post = {
-    id: 1,
-    title: "Blog title",
-    description: "Blog description",
-  };
+app.use(express.static('public'));
 
-  res.send(post);
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'template/index.html'));
 });
 
-app.listen(port);
+app.listen(port, () => {
+  console.log('app started on' + port);
+});
