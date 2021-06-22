@@ -3,7 +3,7 @@ const path = require('path');
 const ejs = require('ejs');
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 app.use(express.static('public'));
 
@@ -20,6 +20,15 @@ app.get('/about', (req, res) => {
 
 app.get('/add-new-post', (req, res) => {
   res.render('add_post');
+});
+
+const jobs = [
+  { id: 1, name: 'Node.js Developer' },
+  { id: 2, name: 'Node.js Tester' },
+];
+
+app.get('/jobs', (req, res) => {
+  res.send(jobs);
 });
 
 app.listen(port, () => {
