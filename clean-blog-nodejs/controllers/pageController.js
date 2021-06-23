@@ -2,9 +2,18 @@ const Post = require("../models/Post");
 
 
 exports.getIndexPage = async (req, res) => {
-    const posts = await Post.find().sort({ 'createdAt': -1 });
+
+    const page = req.query.page || 1;
+    const postsPerPage = 5;
+
+    const posts = await Post.find()
+        .sort({ 'createdAt': -1 })
+        .skip((page - 1) * postsPerPage)
+        .limit(postsPerPage);
+
     res.render('index', {
-        posts
+        posts,
+        currentPage: page
     });
 },
 
