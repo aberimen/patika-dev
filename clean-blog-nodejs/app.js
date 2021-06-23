@@ -3,6 +3,8 @@ const path = require('path');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const Post = require('./models/Post');
+const postController = require('./controllers/postController');
+const pageController = require('./controllers/pageController');
 
 const app = express();
 const port = 3001;
@@ -21,32 +23,16 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/', async (req, res) => {
-  const posts = await Post.find();
-  res.render('index', {
-    posts
-  });
-});
+//pages
+app.get('/', pageController.getIndexPage);
+app.get('/about', pageController.getAboutPage);
+app.get('/add-new-post', pageController.getNewPostPage);
 
-app.get('/about', (req, res) => {
-  res.render('about');
-});
+//post
+app.post('/posts', postController.createNewPost);
+app.get('/posts/:id', postController.getPost);
 
-app.get('/add-new-post', (req, res) => {
-  res.render('add_post');
-});
 
-app.post('/posts', async (req, res) => {
-  await Post.create(req.body);
-  res.redirect('/');
-});
-
-app.get('/posts/:id', async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  res.render('post', {
-    post
-  });
-});
 
 app.listen(port, () => {
   console.log('app started on: ' + port);
